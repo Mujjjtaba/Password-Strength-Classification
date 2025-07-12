@@ -10,32 +10,26 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 
-# ✅ Define char_tokenizer to match what was used during training
 def char_tokenizer(text):
     return list(text)
 
-# ✅ Load Models
 models = {
     "Logistic Regression": joblib.load("models/logistic_regression.pkl"),
     "XGBoost": joblib.load("models/xgboost.pkl"),
     "Naive Bayes": joblib.load("models/naive_bayes.pkl")
 }
 
-# ✅ Load TF-IDF Vectorizer
 tfidf = joblib.load("models/tfidf.pkl")
 
-# ✅ Password Strength Prediction
 def predict_password_strength(password, model):
     password_features = tfidf.transform([password])
     prediction = model.predict(password_features)[0]
     return ["Weak", "Moderate", "Strong"][prediction]
 
-# ✅ Password Generator
 def generate_strong_password(length=12):
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(random.choice(characters) for _ in range(length))
 
-# ✅ Cached Dataset Load
 @st.cache_data
 def load_eval_data():
     df = pd.read_csv("data/data.csv")
@@ -45,7 +39,6 @@ def load_eval_data():
     X_tfidf = tfidf.transform(X)
     return train_test_split(X_tfidf, y, test_size=0.1, random_state=42)
 
-# ✅ Confusion Matrix Evaluation
 def show_model_evaluation():
     st.title("📊 Model Evaluation - Confusion Matrices")
     X_train, X_test, y_train, y_test = load_eval_data()
@@ -63,7 +56,6 @@ def show_model_evaluation():
             ax.set_ylabel("Actual")
             st.pyplot(fig)
 
-# ✅ Training Time + Accuracy Comparison
 def show_model_comparison():
     st.title("📈 Model Comparison: Training Time & Accuracy")
 
@@ -94,7 +86,6 @@ def show_model_comparison():
     except FileNotFoundError:
         st.error("❌ metrics.json not found. Please re-run `train_and_save_models.py`.")
 
-# ✅ Streamlit App
 def main():
     st.title("🔐 Password Strength Classifier ML App")
     st.subheader("Built with Streamlit")
@@ -133,6 +124,5 @@ def main():
     elif choice == "Model Comparison":
         show_model_comparison()
 
-# ✅ Run App
 if __name__ == '__main__':
     main()
