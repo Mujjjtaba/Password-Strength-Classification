@@ -9,7 +9,7 @@ import joblib
 import os
 import time
 import json
-
+ 
 # 👇 Tokenizer
 def char_tokenizer(text):
     return list(text)
