@@ -4,7 +4,7 @@ This is a web-based machine learning app that classifies the strength of a passw
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Live Link
 
 🔗 [Click here to try the app](https://mujjjtaba-password-strength-classification-app-hrvln6.streamlit.app/)
 
