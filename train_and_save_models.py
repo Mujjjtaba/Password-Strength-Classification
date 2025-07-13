@@ -5,20 +5,37 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.utils import resample
 import joblib
 import os
 import time
 import json
- 
+
 def char_tokenizer(text):
     return list(text)
- 
+
 print("📦 Loading dataset...")
 df = pd.read_csv('data/data.csv')
-X = df['password'].fillna("")
-y = df['strength']
+df['password'] = df['password'].fillna("")
 
-print("🧠 Vectorizing with TF-IDF...")
+print("\n🔵 Class distribution:")
+print(df['strength'].value_counts(normalize=True))
+
+print("\n🔁 Balancing the dataset...")
+df_major = df[df['strength'] == 1]
+df_minor_0 = df[df['strength'] == 0]
+df_minor_2 = df[df['strength'] == 2]
+
+df_0_upsampled = resample(df_minor_0, replace=True, n_samples=len(df_major), random_state=42)
+df_2_upsampled = resample(df_minor_2, replace=True, n_samples=len(df_major), random_state=42)
+
+df_balanced = pd.concat([df_major, df_0_upsampled, df_2_upsampled])
+df_balanced = df_balanced.sample(frac=1, random_state=42).reset_index(drop=True)
+
+X = df_balanced['password']
+y = df_balanced['strength']
+
+print("\n🧠 Vectorizing with TF-IDF...")
 tfidf = TfidfVectorizer(tokenizer=char_tokenizer, token_pattern=None)
 X_tfidf = tfidf.fit_transform(X)
 
@@ -33,7 +50,7 @@ models = {
 os.makedirs("models", exist_ok=True)
 metrics = {}
 
-print("🚀 Starting model training...")
+print("\n🚀 Starting model training...")
 for name, model in models.items():
     try:
         print(f"\n🔧 Training model: {name}...")
@@ -49,7 +66,7 @@ for name, model in models.items():
             "accuracy": round(accuracy * 100, 2)
         }
 
-        print(f"✅ {name} saved successfully. Accuracy: {metrics[name]['accuracy']}%, Time: {metrics[name]['training_time_sec']}s")
+        print(f"✅ {name} saved. Accuracy: {metrics[name]['accuracy']}%, Time: {metrics[name]['training_time_sec']}s")
 
     except Exception as e:
         print(f"❌ ERROR training {name}: {e}")

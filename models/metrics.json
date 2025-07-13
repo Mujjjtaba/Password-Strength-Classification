@@ -1,14 +1,14 @@
 {
     "logistic_regression": {
-        "training_time_sec": 6.66,
-        "accuracy": 82.02
+        "training_time_sec": 14.81,
+        "accuracy": 80.34
     },
     "xgboost": {
-        "training_time_sec": 5.26,
-        "accuracy": 98.05
+        "training_time_sec": 10.84,
+        "accuracy": 98.85
     },
     "naive_bayes": {
-        "training_time_sec": 0.08,
-        "accuracy": 74.45
+        "training_time_sec": 0.19,
+        "accuracy": 58.87
     }
 }

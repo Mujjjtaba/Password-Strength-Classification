@@ -58,7 +58,6 @@ def show_model_evaluation():
 
 def show_model_comparison():
     st.title("📈 Model Comparison: Training Time & Accuracy")
-
     try:
         with open("models/metrics.json", "r") as f:
             metrics = json.load(f)
@@ -95,7 +94,8 @@ def main():
         "Generate Password",
         "About",
         "Model Evaluation",
-        "Model Comparison"
+        "Model Comparison",
+        "Insights"
     ]
     choice = st.sidebar.selectbox("Select Activity", activities)
 
@@ -123,6 +123,41 @@ def main():
 
     elif choice == "Model Comparison":
         show_model_comparison()
+
+    elif choice == "Insights":
+        st.title("📌 Project Insights and Model Selection Rationale")
+        st.markdown("""
+### 🔍 Summary of Model Evaluation
+
+In this project, we evaluated three machine learning models to classify password strength:
+
+- **Naive Bayes**: Fast and simple but struggled with class overlap, leading to frequent misclassifications.
+- **Logistic Regression**: Delivered moderate performance but often confused moderate-strength passwords.
+- **XGBoost**: Achieved the highest accuracy and the clearest class separation in the confusion matrix.
+
+---
+
+### ✅ Why XGBoost Was Selected
+
+- **Highest test accuracy**
+- **Best performance on confusion matrix**
+- **Handles class imbalance and character-level features well**
+- **Minimal overfitting**
+
+---
+
+### 🧠 Lessons Demonstrated
+
+- Model experimentation and comparison
+- Use of TF-IDF vectorization on character tokens
+- Balancing imbalanced data through upsampling
+- Visual evaluation with confusion matrices and bar charts
+- Final model selection based on empirical results
+
+---
+
+> This methodology mirrors real-world ML workflows and demonstrates critical thinking in selecting the optimal model.
+        """)
 
 if __name__ == '__main__':
     main()
