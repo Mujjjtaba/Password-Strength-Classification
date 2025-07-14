@@ -85,6 +85,31 @@ def show_model_comparison():
     except FileNotFoundError:
         st.error("❌ metrics.json not found. Please re-run `train_and_save_models.py`.")
 
+def show_extended_metrics():
+    st.title("📊 Extended Model Metrics")
+    st.markdown("This section shows **Precision**, **Recall**, and **F1-score** for each model to evaluate their performance on imbalanced data.")
+
+    try:
+        with open("models/metrics.json", "r") as f:
+            metrics = json.load(f)
+
+        metric_names = ["precision", "recall", "f1_score"]
+        colors = ["#4caf50", "#2196f3", "#ff9800"]
+
+        for metric, color in zip(metric_names, colors):
+            st.markdown(f"### {metric.capitalize()}")
+            fig, ax = plt.subplots()
+            scores = [metrics[model.lower().replace(' ', '_')][metric] for model in models.keys()]
+            ax.bar(models.keys(), scores, color=color)
+            ax.set_ylabel(f"{metric.capitalize()} (%)")
+            ax.set_ylim(0, 100)
+            st.pyplot(fig)
+
+    except FileNotFoundError:
+        st.error("❌ metrics.json not found. Please re-run `train_and_save_models.py`.")
+    except KeyError as e:
+        st.error(f"❌ Missing metric in data: {e}")
+
 def main():
     st.title("🔐 Password Strength Classifier ML App")
     st.subheader("Built with Streamlit")
@@ -95,6 +120,7 @@ def main():
         "About",
         "Model Evaluation",
         "Model Comparison",
+        "Extended Metrics",
         "Insights"
     ]
     choice = st.sidebar.selectbox("Select Activity", activities)
@@ -123,6 +149,9 @@ def main():
 
     elif choice == "Model Comparison":
         show_model_comparison()
+
+    elif choice == "Extended Metrics":
+        show_extended_metrics()
 
     elif choice == "Insights":
         st.title("📌 Project Insights and Model Selection Rationale")
@@ -153,8 +182,6 @@ In this project, we evaluated three machine learning models to classify password
 - Balancing imbalanced data through upsampling
 - Visual evaluation with confusion matrices and bar charts
 - Final model selection based on empirical results
-
----
 
 > This methodology mirrors real-world ML workflows and demonstrates critical thinking in selecting the optimal model.
         """)

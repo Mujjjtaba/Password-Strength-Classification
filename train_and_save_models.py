@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.utils import resample
 import joblib
 import os
@@ -60,10 +60,19 @@ for name, model in models.items():
 
         joblib.dump(model, f"models/{name}.pkl")
 
-        accuracy = accuracy_score(y_test, model.predict(X_test))
+        y_pred = model.predict(X_test)
+
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, average='weighted', zero_division=0)
+        recall = recall_score(y_test, y_pred, average='weighted', zero_division=0)
+        f1 = f1_score(y_test, y_pred, average='weighted', zero_division=0)
+
         metrics[name] = {
             "training_time_sec": round(end - start, 2),
-            "accuracy": round(accuracy * 100, 2)
+            "accuracy": round(accuracy * 100, 2),
+            "precision": round(precision * 100, 2),
+            "recall": round(recall * 100, 2),
+            "f1_score": round(f1 * 100, 2)
         }
 
         print(f"✅ {name} saved. Accuracy: {metrics[name]['accuracy']}%, Time: {metrics[name]['training_time_sec']}s")
@@ -71,9 +80,11 @@ for name, model in models.items():
     except Exception as e:
         print(f"❌ ERROR training {name}: {e}")
 
+# Save vectorizer
 joblib.dump(tfidf, "models/tfidf.pkl")
 print("\n📁 TF-IDF vectorizer saved.")
 
+# Save all metrics to JSON
 with open("models/metrics.json", "w") as f:
     json.dump(metrics, f, indent=4)
-print("📊 Training metrics saved.")
+print("📊 Training metrics (with extended metrics) saved.")

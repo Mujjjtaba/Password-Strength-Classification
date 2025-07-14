@@ -1,14 +1,23 @@
 {
     "logistic_regression": {
-        "training_time_sec": 14.81,
-        "accuracy": 80.34
+        "training_time_sec": 14.72,
+        "accuracy": 80.34,
+        "precision": 80.17,
+        "recall": 80.34,
+        "f1_score": 80.2
     },
     "xgboost": {
-        "training_time_sec": 10.84,
-        "accuracy": 98.85
+        "training_time_sec": 11.35,
+        "accuracy": 98.85,
+        "precision": 98.86,
+        "recall": 98.85,
+        "f1_score": 98.85
     },
     "naive_bayes": {
-        "training_time_sec": 0.19,
-        "accuracy": 58.87
+        "training_time_sec": 0.17,
+        "accuracy": 58.87,
+        "precision": 58.42,
+        "recall": 58.87,
+        "f1_score": 58.47
     }
 }
