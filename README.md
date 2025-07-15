@@ -1,4 +1,4 @@
-# 🔐 Password Strength Classification – Streamlit App
+# 🔐 Password Strength Classifier – Streamlit App
 
 This is a web-based machine learning app that classifies the strength of a password as **Weak**, **Moderate**, or **Strong**.
 
