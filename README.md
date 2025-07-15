@@ -4,6 +4,12 @@ This is a web-based machine learning app that classifies the strength of a passw
 
 ---
 
+## 📄 Project Report
+
+[![View Report](https://img.shields.io/badge/View_Report-PDF-blue)](https://drive.google.com/file/d/1HKRMCF9g0xNhOWGret7JJ4rdxpg6iKvV/view?usp=sharing)
+
+---
+
 ## 🌐 Live Link
 
 🔗 [Click here to try the app](https://mujjjtaba-password-strength-classification-app-hrvln6.streamlit.app/)
